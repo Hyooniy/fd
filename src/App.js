@@ -1,25 +1,41 @@
-import logo from './logo.svg';
+import ProductList from './components/ProductList';
+import data from './productList.json';
+import Option from './components/Option'
 import './App.css';
+import { useState } from "react";
 
-function App() {
+
+
+export default function App() {
+  const [order,SetOrder] = useState('id');
+  const [items,SetItmes] = useState(data);
+  const sortItems = items.sort((a,b) => b[order]-a[order]);
+  const priceClick = () => SetOrder('price');
+  const bestClick = () => SetOrder('ration'); 
+  
+
+  const DeleteItem = (id) => {
+    const newItem = items.filter((item) => item.id !== id)
+    SetItmes(newItem);
+  }
+  //option
+  const [kind,SetKind] = useState('kind');
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div id='wrap'>
+      <div className='btn'>
+        <button type="button"
+        onClick={priceClick}>가격</button>
+        <button type="button"
+        onClick={bestClick}>인기순</button>
+        <Option 
+        kind = {kind}/>
+      </div>
+        
+      <ProductList 
+      items = {sortItems}
+      onDelete = {DeleteItem}/>
+      
     </div>
   );
 }
-
-export default App;
